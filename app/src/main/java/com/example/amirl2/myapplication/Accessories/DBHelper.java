@@ -1,4 +1,4 @@
-package com.example.amirl2.myapplication;
+package com.example.amirl2.myapplication.Accessories;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -45,15 +45,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table " + USERS_TABLE_NAME
-                        + " ( " + USERS_COLUMN_ID + "integer primary key autoincrement, "
+                        + " ( " + USERS_COLUMN_ID + " integer primary key autoincrement, "
                         + USERS_COLUMN_NAME + " text, " + USERS_COLUMN_USERNAME + " text, " + USERS_COLUMN_PASSWORD + " text )"
         );
 
         db.execSQL(
                 "create table " + LOGS_TABLE_NAME
-                        + " ( " + LOGS_COLUMN_ID  + "integer primary key autoincrement, " + LOGS_COLUMN_DATE
-                        + " text, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text"
-                        + " foreign key " + LOGS_COLUMN_FK_USERS_USER_ID + " references" +USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID +" ))"
+                        + " ( " + LOGS_COLUMN_ID  + " integer primary key autoincrement, " + LOGS_COLUMN_DATE
+                        + " text, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
+                        + LOGS_COLUMN_FK_USERS_USER_ID + " integer, "
+                        + " foreign key " +"(" +LOGS_COLUMN_FK_USERS_USER_ID+")" + " references " +USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID +" ))"
         );
     }
 
@@ -64,12 +65,21 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean createUser (String name, String username, String password) {
+    public boolean createNewUser (String name, String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USERS_COLUMN_NAME, name);
         contentValues.put(USERS_COLUMN_USERNAME, username);
         contentValues.put(USERS_COLUMN_PASSWORD, password);
+        db.insert(USERS_TABLE_NAME, null, contentValues);
+        return true;
+    }
+    public boolean createNewUser (UserObj user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USERS_COLUMN_NAME, user.getName());
+        contentValues.put(USERS_COLUMN_USERNAME, user.getUsername());
+        contentValues.put(USERS_COLUMN_PASSWORD, user.getPassword());
         db.insert(USERS_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -105,17 +115,46 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[] { Integer.toString(id) });
     }
 
-    public ArrayList<String> getAllCotacts() {
-        ArrayList<String> array_list = new ArrayList<String>();
-
+    public ArrayList<UserObj> getAllUsers() {
+        ArrayList<UserObj> usersList = new ArrayList<UserObj>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts", null );
+        Cursor res = db.rawQuery("select * from " + USERS_TABLE_NAME, null);
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
-            array_list.add(res.getString(res.getColumnIndex(USERS_COLUMN_NAME)));
+        while (res.isAfterLast() == false) {
+            UserObj user = new UserObj();
+            user.setId((res.getInt(res.getColumnIndex(USERS_COLUMN_ID))));
+            user.setName((res.getString(res.getColumnIndex(USERS_COLUMN_NAME))));
+            user.setUsername((res.getString(res.getColumnIndex(USERS_COLUMN_USERNAME))));
+            user.setPassword((res.getString(res.getColumnIndex(USERS_COLUMN_PASSWORD))));
+            usersList.add(user);
             res.moveToNext();
         }
-        return array_list;
+        return usersList;
     }
+
+
+    public boolean validateUser(String username, String password){
+        Cursor res = getReadableDatabase().rawQuery(
+                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_NAME+ "='" + username +"'AND "+ USERS_COLUMN_PASSWORD + "='"+password+"'" ,  null);
+        if (res.getCount()>0)
+            return true;
+        return false;
+    }
+
+
+//
+//    public ArrayList<String> getAllUsers() {
+//        ArrayList<String> array_list = new ArrayList<String>();
+//
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor res =  db.rawQuery( "select * from contacts", null );
+//        res.moveToFirst();
+//
+//        while(res.isAfterLast() == false){
+//            array_list.add(res.getString(res.getColumnIndex(USERS_COLUMN_NAME)));
+//            res.moveToNext();
+//        }
+//        return array_list;
+//    }
 }

@@ -1,4 +1,4 @@
-package com.example.amirl2.myapplication;
+package com.example.amirl2.myapplication.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.amirl2.myapplication.Accessories.DBHelper;
+import com.example.amirl2.myapplication.Accessories.UserObj;
+import com.example.amirl2.myapplication.R;
+
 public class NewUserActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,9 @@ public class NewUserActivity extends AppCompatActivity {
         final EditText etPasswordRetype = (EditText) findViewById(R.id.et_password_retype);
         final Button btnCreateUser = (Button) findViewById(R.id.btn_create_user);
 
+        final DBHelper dbHelper = new DBHelper(this);
+
+
         btnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,7 +41,10 @@ public class NewUserActivity extends AppCompatActivity {
 
                 if (!password.equals(passwordRetype))
                     Toast.makeText(NewUserActivity.this, "The two passwords you entered are not equal", Toast.LENGTH_LONG).show();
-
+                else {
+                    UserObj newUser = new UserObj(name, username, password);
+                    dbHelper.createNewUser(newUser);
+                }
             }
 
         });
@@ -49,7 +60,7 @@ public class NewUserActivity extends AppCompatActivity {
 
                 if (etUsername.length() > 0 && etPassword.length() > 0 && etPasswordRetype.length() > 0)
                     btnCreateUser.setEnabled(true);
-                else if (etUsername.length() == 0 || etPassword.length()== 0 || etPasswordRetype.length() == 0)
+                else if (etUsername.length() == 0 || etPassword.length() == 0 || etPasswordRetype.length() == 0)
                     btnCreateUser.setEnabled(false);
             }
 
