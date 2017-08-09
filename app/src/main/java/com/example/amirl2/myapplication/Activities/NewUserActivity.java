@@ -1,5 +1,6 @@
 package com.example.amirl2.myapplication.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,7 +30,6 @@ public class NewUserActivity extends AppCompatActivity {
 
         final DBHelper dbHelper = new DBHelper(this);
 
-
         btnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +43,13 @@ public class NewUserActivity extends AppCompatActivity {
                     Toast.makeText(NewUserActivity.this, "The two passwords you entered are not equal", Toast.LENGTH_LONG).show();
                 else {
                     UserObj newUser = new UserObj(name, username, password);
-                    dbHelper.createNewUser(newUser);
+                    boolean created = dbHelper.createNewUser(newUser);
+                    if (created) {
+                        Intent logsActivityIntent = new Intent(NewUserActivity.this, LogsActivity.class);
+                        logsActivityIntent.putExtra("user", newUser);
+                        startActivity(logsActivityIntent);
+                        finish();
+                    }
                 }
             }
 

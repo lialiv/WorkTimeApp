@@ -1,10 +1,13 @@
 package com.example.amirl2.myapplication.Accessories;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by AmirL2 on 8/8/2017.
  */
 
-public class UserObj
+public class UserObj implements Parcelable
 
 {
     public int id;
@@ -59,6 +62,54 @@ public class UserObj
     public void setPassword(String password) {
         this.password = password;
     }
+
+    // For Parcelable
+    public UserObj(Parcel in) {
+            this.id = in.readInt();
+            this.name = in.readString();
+            this.username = in.readString();
+            this.password =  in.readString();
+        }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.id);
+        parcel.writeString(this.name);
+        parcel.writeString(this.username);
+        parcel.writeString(this.password);
+
+    }
+
+
+    public static final Parcelable.Creator<UserObj> CREATOR
+            = new Parcelable.Creator<UserObj>() {
+        public UserObj createFromParcel(Parcel in) {
+            return new UserObj(in);
+        }
+
+        public UserObj[] newArray(int size) {
+            return new UserObj[size];
+        }
+    };
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+
 
 }
 

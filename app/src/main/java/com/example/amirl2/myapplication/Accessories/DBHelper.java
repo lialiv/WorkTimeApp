@@ -8,7 +8,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -34,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Context context;
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME , null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
 
     }
@@ -42,7 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
-
         db.execSQL(
                 "create table " + USERS_TABLE_NAME
                         + " ( " + USERS_COLUMN_ID + " integer primary key autoincrement, "
@@ -51,10 +52,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(
                 "create table " + LOGS_TABLE_NAME
-                        + " ( " + LOGS_COLUMN_ID  + " integer primary key autoincrement, " + LOGS_COLUMN_DATE
-                        + " text, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
+                        + " ( " + LOGS_COLUMN_ID + " integer primary key autoincrement, " + LOGS_COLUMN_DATE
+                        + " integer, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
                         + LOGS_COLUMN_FK_USERS_USER_ID + " integer, "
-                        + " foreign key " +"(" +LOGS_COLUMN_FK_USERS_USER_ID+")" + " references " +USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID +" ))"
+                        + " foreign key " + "(" + LOGS_COLUMN_FK_USERS_USER_ID + ")" + " references " + USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID + " ))"
         );
     }
 
@@ -65,16 +66,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean createNewUser (String name, String username, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(USERS_COLUMN_NAME, name);
-        contentValues.put(USERS_COLUMN_USERNAME, username);
-        contentValues.put(USERS_COLUMN_PASSWORD, password);
-        db.insert(USERS_TABLE_NAME, null, contentValues);
-        return true;
+    public void createNewLog() {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        String currentDate = sdf.format(calendar.getTime());
     }
-    public boolean createNewUser (UserObj user) {
+
+    public boolean createNewUser(UserObj user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USERS_COLUMN_NAME, user.getName());
@@ -86,17 +85,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts where id="+id+"", null );
+        Cursor res = db.rawQuery("select * from contacts where id=" + id + "", null);
         return res;
     }
 
-    public int numberOfRows(){
+    public int numberOfRows() {
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, USERS_TABLE_NAME);
         return numRows;
     }
 
-    public boolean updateContact (Integer id, String name, String phone, String email, String street,String place) {
+    public boolean updateContact(Integer id, String name, String phone, String email, String street, String place) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -104,15 +103,15 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("email", email);
         contentValues.put("street", street);
         contentValues.put("place", place);
-        db.update("contacts", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update("contacts", contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
 
-    public Integer deleteContact (Integer id) {
+    public Integer deleteContact(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("contacts",
                 "id = ? ",
-                new String[] { Integer.toString(id) });
+                new String[]{Integer.toString(id)});
     }
 
     public ArrayList<UserObj> getAllUsers() {
@@ -134,12 +133,28 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean validateUser(String username, String password){
-        Cursor res = getReadableDatabase().rawQuery(
-                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_NAME+ "='" + username +"'AND "+ USERS_COLUMN_PASSWORD + "='"+password+"'" ,  null);
-        if (res.getCount()>0)
-            return true;
-        return false;
+    public int validateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(
+                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_USERNAME + "='" + username + "' AND " + USERS_COLUMN_PASSWORD + "='" + password + "'", null);
+        if (res.getCount() > 0) {
+            res.moveToFirst();
+            int userId = res.getInt(res.getColumnIndex(USERS_COLUMN_ID));
+            return userId;
+        } else
+            return 0;
+    }
+
+    public UserObj getUserById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(
+                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_ID + "='" + userId + "';", null);
+        res.moveToFirst();
+        String name = res.getString(res.getColumnIndex(USERS_COLUMN_NAME));
+        String username = res.getString(res.getColumnIndex(USERS_COLUMN_USERNAME));
+        String password = res.getString(res.getColumnIndex(USERS_COLUMN_PASSWORD));
+        UserObj user = new UserObj(userId, name, username, password);
+        return user;
     }
 
 

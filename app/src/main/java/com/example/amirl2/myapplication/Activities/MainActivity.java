@@ -14,8 +14,6 @@ import com.example.amirl2.myapplication.Accessories.DBHelper;
 import com.example.amirl2.myapplication.Accessories.UserObj;
 import com.example.amirl2.myapplication.R;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
@@ -61,15 +59,26 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isValid = dbHelper.validateUser(etUsername.getText().toString(), etPassword.getText().toString());
-                Toast.makeText(MainActivity.this, "The username and password are good!", Toast.LENGTH_LONG);
+                int userId = dbHelper.validateUser(etUsername.getText().toString(), etPassword.getText().toString());
+                if (userId != 0) {
+                    UserObj userObj = dbHelper.getUserById(userId);
+                    Intent timeActivityIntent = new Intent(MainActivity.this, LogsActivity.class);
+                    timeActivityIntent.putExtra("user", userObj);
+                    startActivity(timeActivityIntent);
+                    etUsername.setText("");
+                    etPassword.setText("");
+                }
+                else if (userId == 0){
+                    Toast.makeText(MainActivity.this, "The username and password does not match!", Toast.LENGTH_LONG).show();
+                    etUsername.setText("");
+                    etPassword.setText("");
+                }
             }
         });
 
         btnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent newUserActivityIntent = new Intent(MainActivity.this, NewUserActivity.class);
                 startActivity(newUserActivityIntent);
             }

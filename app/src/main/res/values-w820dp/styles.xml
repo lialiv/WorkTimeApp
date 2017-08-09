@@ -15,4 +15,15 @@
         <item name="android:background">@color/colorPrimary</item>
         </style>
 
+    <style name="Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">80dp</item>
+        <item name="android:padding">@dimen/activity_vertical_margin</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>
