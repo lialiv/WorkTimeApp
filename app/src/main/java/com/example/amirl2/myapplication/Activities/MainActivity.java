@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent newUserActivityIntent = new Intent(MainActivity.this, NewUserActivity.class);
                 startActivity(newUserActivityIntent);
+                etUsername.setText("");
+                etPassword.setText("");
             }
         });
 
