@@ -13,29 +13,29 @@
     >
     
     <TextView
-        android:id="@+id/tv_welcome"
+        android:id="@+id/tv_welcome_user"
         style="@style/Header"
-        android:text="Welcome"
+        android:text="Welcome user"
         />
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        style="@style/Header"
+        android:layout_below="@id/tv_welcome_user"
+        android:layout_marginTop="5dp"
         />
 
-    <TextView
-        android:id="@+id/tv_time"
+    <TextClock
+        android:id="@+id/tc_time"
+        style="@style/Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    />
-
-    <TextClock
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_below="@id/tv_date"
+        android:layout_marginTop="5dp"
+        android:format12Hour="h:m:s a"
+        tools:targetApi="jelly_bean_mr1" />
 
 
 </RelativeLayout>

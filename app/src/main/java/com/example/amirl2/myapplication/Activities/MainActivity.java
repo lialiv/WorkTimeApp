@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "The username and password does not match!", Toast.LENGTH_LONG).show();
                     etUsername.setText("");
                     etPassword.setText("");
+                    etUsername.requestFocus();
                 }
             }
         });
