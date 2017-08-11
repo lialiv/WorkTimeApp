@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(
                 "create table " + LOGS_TABLE_NAME
                         + " ( " + LOGS_COLUMN_ID + " integer primary key autoincrement, " + LOGS_COLUMN_DATE
-                        + " integer, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
+                        + " text, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
                         + LOGS_COLUMN_FK_USERS_USER_ID + " integer, "
                         + " foreign key " + "(" + LOGS_COLUMN_FK_USERS_USER_ID + ")" + " references " + USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID + " ))"
         );
@@ -83,10 +83,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getData(int id) {
+    public LogObj getLogForUserByDate(int id, String date) {
+        LogObj logObj = new LogObj();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from contacts where id=" + id + "", null);
-        return res;
+        Cursor res = db.rawQuery("select * from " + LOGS_TABLE_NAME + " where " + LOGS_COLUMN_DATE + "='" + date + "' and " + LOGS_COLUMN_FK_USERS_USER_ID + "=" + id + ";", null);
+        if (res != null) {
+            res.moveToFirst();
+            logObj.setId((res.getInt(res.getColumnIndex(LOGS_COLUMN_ID))));
+            logObj.setDate((res.getString(res.getColumnIndex(LOGS_COLUMN_DATE))));
+            logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));
+            logObj.setExitTime((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME))));
+        }
+        return logObj;
     }
 
     public int numberOfRows() {
@@ -95,15 +103,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateContact(Integer id, String name, String phone, String email, String street, String place) {
+    public boolean updateCurrentExitLog(LogObj logObj){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        contentValues.put("email", email);
-        contentValues.put("street", street);
-        contentValues.put("place", place);
-        db.update("contacts", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        contentValues.put(LOGS_COLUMN_EXIT_TIME, logObj.exitTime);
+        db.update(LOGS_TABLE_NAME, contentValues, LOGS_COLUMN_ID + " = " + logObj.id, null);
         return true;
     }
 
@@ -157,8 +161,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    public boolean insertCurrentEntryLog(LogObj logObj, UserObj userObj) {
 
-//
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LOGS_COLUMN_DATE, logObj.date);
+        contentValues.put(LOGS_COLUMN_ENTRY_TIME, logObj.entryTime);
+        contentValues.put(LOGS_COLUMN_EXIT_TIME, logObj.exitTime);
+        contentValues.put(LOGS_COLUMN_FK_USERS_USER_ID, userObj.id);
+        long inserted = db.insert(LOGS_TABLE_NAME, null, contentValues);
+
+        if (inserted == -1)
+            return false;
+        return true;
+    }
+//``
 //    public ArrayList<String> getAllUsers() {
 //        ArrayList<String> array_list = new ArrayList<String>();
 //
@@ -172,4 +189,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //        }
 //        return array_list;
 //    }
+
+
 }

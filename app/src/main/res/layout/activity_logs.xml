@@ -16,14 +16,15 @@
         style="@style/Header"
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
+        android:textSize="35dp"
         android:text="Welcome user"
-        android:textSize="40dp"
         android:textStyle="italic" />
 
     <TextView
         android:id="@+id/tv_date"
         style="@style/Header"
-        android:textSize="35dp"
+        android:layout_marginTop="70dp"
+        android:textSize="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_welcome_user" />
@@ -31,6 +32,7 @@
     <TextClock
         android:id="@+id/tc_time"
         style="@style/Header"
+        android:textSize="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_date"
@@ -41,6 +43,7 @@
     <Switch
         android:id="@+id/switch_in_out"
         style="@style/Header"
+        android:layout_marginTop="70dp"
         android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/tc_time"
@@ -54,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/switch_in_out"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="10dp"
         android:background="@drawable/round_button"
         android:padding="10dp"
         android:text="start"
