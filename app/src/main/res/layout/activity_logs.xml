@@ -4,28 +4,29 @@
     android:id="@+id/activity_time"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.amirl2.myapplication.Activities.LogsActivity"
-    android:background="@android:color/holo_blue_light"
-    >
-    
+    tools:context="com.example.amirl2.myapplication.Activities.LogsActivity">
+
     <TextView
         android:id="@+id/tv_welcome_user"
         style="@style/Header"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
         android:text="Welcome user"
-        />
+        android:textSize="40dp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/tv_date"
+        style="@style/Header"
+        android:textSize="35dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Header"
-        android:layout_below="@id/tv_welcome_user"
-        android:layout_marginTop="5dp"
-        />
+        android:layout_below="@id/tv_welcome_user" />
 
     <TextClock
         android:id="@+id/tc_time"
@@ -37,5 +38,27 @@
         android:format12Hour="h:m:s a"
         tools:targetApi="jelly_bean_mr1" />
 
+    <Switch
+        android:id="@+id/switch_in_out"
+        style="@style/Header"
+        android:layout_width="@dimen/layout_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tc_time"
+        android:layout_centerHorizontal="true"
+        android:checked="true"
+        android:text="Start Shift" />
+
+    <Button
+        android:id="@+id/btn_set_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch_in_out"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/round_button"
+        android:padding="10dp"
+        android:text="start"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold" />
 
 </RelativeLayout>
