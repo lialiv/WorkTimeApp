@@ -148,6 +148,16 @@ public class DBHelper extends SQLiteOpenHelper {
             return 0;
     }
 
+    public boolean checkUsernameAvailability(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery(
+                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_USERNAME+ "='" + username + "';", null);
+        if (res.getCount() == 0)
+            return true;
+        else
+            return false;
+    }
+
     public UserObj getUserById(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery(

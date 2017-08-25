@@ -1,6 +1,7 @@
 package com.example.amirl2.myapplication.Activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -51,20 +52,24 @@ public class NewUserActivity extends AppCompatActivity {
                 String passwordRetype = etPasswordRetype.getText().toString();
 
                 if (!password.equals(passwordRetype))
-                    Toast.makeText(NewUserActivity.this, "The two passwords you entered are not equal", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewUserActivity.this, getResources().getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
                 else {
-                    UserObj newUser = new UserObj(name, username, password);
-                    boolean created = dbHelper.createNewUser(newUser);
-                    if (created) {
-                        Intent logsActivityIntent = new Intent(NewUserActivity.this, LogsActivity.class);
-                        logsActivityIntent.putExtra("user", newUser);
-                        startActivity(logsActivityIntent);
-                        finish();
-                    }
+                    if (dbHelper.checkUsernameAvailability(username)) {
+                        UserObj newUser = new UserObj(name, username, password);
+                        boolean created = dbHelper.createNewUser(newUser);
+                        if (created) {
+                            Intent logsActivityIntent = new Intent(NewUserActivity.this, LogsActivity.class);
+                            logsActivityIntent.putExtra("user", newUser);
+                            startActivity(logsActivityIntent);
+                            finish();
+                        }
+                    } else
+                        Toast.makeText(NewUserActivity.this, getResources().getString(R.string.username_not_available), Toast.LENGTH_LONG).show();
                 }
-            }
 
+            }
         });
+
 
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -91,7 +96,7 @@ public class NewUserActivity extends AppCompatActivity {
 
     private void checkUsernameAndPasswordValidity() {
         if (etUsername.length() > 0 && etPassword.length() > 0 && etPasswordRetype.length() > 0) {
-            if ((etUsername.length()>=8 && etUsername.length()<=24)) {
+            if ((etUsername.length() >= 8 && etUsername.length() <= 24)) {
                 tvUserLong.setVisibility(View.INVISIBLE);
                 if (isStrong(etPassword.getText().toString())) {
                     btnCreateUser.setEnabled(true);
@@ -100,7 +105,10 @@ public class NewUserActivity extends AppCompatActivity {
                     tvPassStrength.setText(getResources().getString(R.string.password_not_strong));
                     tvPassStrength.setVisibility(View.VISIBLE);
                 }
-            } else {
+            } else if ((etUsername.length()) < 8){
+                tvUserLong.setText(getResources().getString(R.string.username_not_long));
+                tvUserLong.setVisibility(View.VISIBLE);
+            }else if ((etUsername.length()) > 24){
                 tvUserLong.setText(getResources().getString(R.string.username_not_long));
                 tvUserLong.setVisibility(View.VISIBLE);
             }
