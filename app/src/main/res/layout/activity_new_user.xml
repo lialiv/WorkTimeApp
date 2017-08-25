@@ -15,11 +15,10 @@
         android:id="@+id/tv_new_user_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Create New User"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_title"
-        android:gravity="center"
-        />
+        android:textSize="@dimen/text_size_title" />
 
     <EditText
         android:id="@+id/et_name"
@@ -86,10 +85,34 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:padding="10dp"
-        android:text="Create"
         android:enabled="false"
+        android:padding="10dp"
+        android:text="Create" />
+
+    <TextView
+        android:id="@+id/tv_password_strength"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:visibility="invisible"
+        android:layout_toEndOf="@id/et_password"
+        android:layout_toRightOf="@id/et_password"
+        android:layout_alignBaseline="@id/et_password"
+        android:layout_marginLeft="10dp"
         />
 
+    <TextView
+        android:id="@+id/tv_username_long"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:visibility="invisible"
+        android:layout_toEndOf="@id/et_username"
+        android:layout_toRightOf="@id/et_username"
+        android:layout_alignBaseline="@id/et_username"
+        android:layout_marginLeft="10dp"
+        />
 
 </RelativeLayout>

@@ -87,8 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
         LogObj logObj = new LogObj();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from " + LOGS_TABLE_NAME + " where " + LOGS_COLUMN_DATE + "='" + date + "' and " + LOGS_COLUMN_FK_USERS_USER_ID + "=" + id + ";", null);
-        if (res != null) {
-            res.moveToFirst();
+        if (res.moveToLast()) {
             logObj.setId((res.getInt(res.getColumnIndex(LOGS_COLUMN_ID))));
             logObj.setDate((res.getString(res.getColumnIndex(LOGS_COLUMN_DATE))));
             logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));

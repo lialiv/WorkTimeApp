@@ -20,6 +20,16 @@
         android:text="Welcome user"
         android:textStyle="italic" />
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:text="Logout"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:scaleType="fitCenter"
+        android:padding="15dp"
+        android:background="@drawable/design_button"
+        />
+
     <TextView
         android:id="@+id/tv_date"
         style="@style/Header"

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int userId = dbHelper.validateUser(etUsername.getText().toString(), etPassword.getText().toString());
+                int userId = dbHelper.validateUser(etUsername.getText().toString().toLowerCase(), etPassword.getText().toString());
                 if (userId != 0) {
                     UserObj userObj = dbHelper.getUserById(userId);
                     Intent timeActivityIntent = new Intent(MainActivity.this, LogsActivity.class);
@@ -89,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }
