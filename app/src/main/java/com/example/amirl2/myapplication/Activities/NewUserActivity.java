@@ -1,7 +1,6 @@
 package com.example.amirl2.myapplication.Activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,8 +22,6 @@ public class NewUserActivity extends AppCompatActivity {
     EditText etPasswordRetype;
     Button btnCreateUser;
     TextView tvPassStrength, tvUserLong;
-
-    String password, username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +55,7 @@ public class NewUserActivity extends AppCompatActivity {
                         UserObj newUser = new UserObj(name, username, password);
                         boolean created = dbHelper.createNewUser(newUser);
                         if (created) {
-                            Intent logsActivityIntent = new Intent(NewUserActivity.this, LogsActivity.class);
+                            Intent logsActivityIntent = new Intent(NewUserActivity.this, StartFinishShiftActivity.class);
                             logsActivityIntent.putExtra("user", newUser);
                             startActivity(logsActivityIntent);
                             finish();
@@ -109,24 +106,16 @@ public class NewUserActivity extends AppCompatActivity {
                 tvUserLong.setText(getResources().getString(R.string.username_not_long));
                 tvUserLong.setVisibility(View.VISIBLE);
             }else if ((etUsername.length()) > 24){
-                tvUserLong.setText(getResources().getString(R.string.username_not_long));
+                tvUserLong.setText(getResources().getString(R.string.username_too_long));
                 tvUserLong.setVisibility(View.VISIBLE);
             }
         } else if (etUsername.length() == 0 || etPassword.length() == 0 || etPasswordRetype.length() == 0) {
             btnCreateUser.setEnabled(false);
         }
-
     }
-
 
     private boolean isStrong(String password) {
-        return password.matches("^(?=.*[A-Z])(?=.*[!@#$*])(?=.*[0-9])(?=.*[a-z]).{8,24}$");
-
-    }
-
-    private boolean isLong(String username) {
-        return username.matches("^{8,24}$");
-
+        return password.matches("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,24}$");
     }
 
 }

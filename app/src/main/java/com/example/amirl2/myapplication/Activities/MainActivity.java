@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 int userId = dbHelper.validateUser(etUsername.getText().toString().toLowerCase(), etPassword.getText().toString());
                 if (userId != 0) {
                     UserObj userObj = dbHelper.getUserById(userId);
-                    Intent timeActivityIntent = new Intent(MainActivity.this, LogsActivity.class);
+                    Intent timeActivityIntent = new Intent(MainActivity.this, StartFinishShiftActivity.class);
                     timeActivityIntent.putExtra("user", userObj);
                     startActivity(timeActivityIntent);
                     etUsername.setText("");

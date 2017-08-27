@@ -88,12 +88,31 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from " + LOGS_TABLE_NAME + " where " + LOGS_COLUMN_DATE + "='" + date + "' and " + LOGS_COLUMN_FK_USERS_USER_ID + "=" + id + ";", null);
         if (res.moveToLast()) {
-            logObj.setId((res.getInt(res.getColumnIndex(LOGS_COLUMN_ID))));
+            if ((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME)) == null))
+                logObj.setId((res.getInt(res.getColumnIndex(LOGS_COLUMN_ID))));
             logObj.setDate((res.getString(res.getColumnIndex(LOGS_COLUMN_DATE))));
             logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));
             logObj.setExitTime((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME))));
         }
         return logObj;
+    }
+
+    public ArrayList<LogObj> getLogsForUser(int id) {
+        ArrayList<LogObj> listLogs = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from " + LOGS_TABLE_NAME + " where " + LOGS_COLUMN_FK_USERS_USER_ID + "=" + id + ";", null);
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            LogObj logObj = new LogObj();
+            logObj.setId((res.getInt(res.getColumnIndex(LOGS_COLUMN_ID))));
+            logObj.setDate((res.getString(res.getColumnIndex(LOGS_COLUMN_DATE))));
+            logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));
+            logObj.setExitTime((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME))));
+            listLogs.add(logObj);
+            res.moveToNext();
+        }
+        return listLogs;
     }
 
     public int numberOfRows() {
@@ -102,7 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateCurrentExitLog(LogObj logObj){
+    public boolean updateCurrentExitLog(LogObj logObj) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(LOGS_COLUMN_EXIT_TIME, logObj.exitTime);
@@ -148,10 +167,10 @@ public class DBHelper extends SQLiteOpenHelper {
             return 0;
     }
 
-    public boolean checkUsernameAvailability(String username){
+    public boolean checkUsernameAvailability(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery(
-                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_USERNAME+ "='" + username + "';", null);
+                "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_USERNAME + "='" + username + "';", null);
         if (res.getCount() == 0)
             return true;
         else
