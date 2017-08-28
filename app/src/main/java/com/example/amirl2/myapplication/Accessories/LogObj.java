@@ -10,26 +10,30 @@ public class LogObj {
     public String date;
     public String entryTime;
     public String exitTime;
+    public String totalTime;
 
     public LogObj() {
     }
 
-    public LogObj(int id, String date, String entryTime, String exitTime) {
+    public LogObj(int id, String date, String entryTime, String exitTime, String totalTime) {
         this.id = id;
         this.date = date;
         this.entryTime = entryTime;
         this.exitTime = exitTime;
+        this.totalTime = totalTime;
     }
 
-    public LogObj(String date, String exitTime) {
+    public LogObj(String date, String exitTime, String totalTime) {
         this.date = date;
         this.exitTime = exitTime;
+        this.totalTime = totalTime;
     }
 
-    public LogObj(String date, String entryTime, String exitTime) {
+    public LogObj(String date, String entryTime, String exitTime, String totalTime) {
         this.date = date;
         this.entryTime = entryTime;
         this.exitTime = exitTime;
+        this.totalTime = totalTime;
     }
 
 
@@ -63,5 +67,13 @@ public class LogObj {
 
     public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
+    }
+
+    public String getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(String totalTime) {
+        this.totalTime = totalTime;
     }
 }

@@ -7,7 +7,7 @@
     <string name="username_too_long">Username must be no more than 24 characters long</string>
     <string name="passwords_do_not_match">The two passwords you entered are not equal</string>
     <string name="username_not_available">This username is already in use\nPlease choose another username</string>
-    <string name="good_luck_in_your_shift">Good luck in your shift! \nPlease logout to keep your data safe</string>
+    <string name="good_luck_in_your_shift">Enjoy your shift! \nPlease logout to keep your data safe</string>
     <string name="see_you_soon">Hope it was a good shift! See you soon\nPlease logout to keep your data safe</string>
 
     <string name="extra_user_obj">extraUserObj</string>

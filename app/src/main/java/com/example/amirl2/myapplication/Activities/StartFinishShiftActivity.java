@@ -1,6 +1,9 @@
 package com.example.amirl2.myapplication.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +20,15 @@ import com.example.amirl2.myapplication.Accessories.DBHelper;
 import com.example.amirl2.myapplication.Accessories.LogObj;
 import com.example.amirl2.myapplication.Accessories.UserObj;
 import com.example.amirl2.myapplication.R;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class StartFinishShiftActivity extends AppCompatActivity {
@@ -32,6 +42,11 @@ public class StartFinishShiftActivity extends AppCompatActivity {
     UserObj userObj;
     LogObj logObj;
     String currentDate, currentDay, currentTime;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +61,8 @@ public class StartFinishShiftActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("dd-MMM-yy");
@@ -89,16 +106,18 @@ public class StartFinishShiftActivity extends AppCompatActivity {
                 currentTime = time.format(calendar.getTime());
 
                 if (switchInOut.isChecked()) {
-                    logObj = new LogObj(currentDate, currentTime, null);
-                    boolean inserted = dbHelper.insertCurrentEntryLog(logObj, userObj);
-                    if (inserted)
-                        Toast.makeText(StartFinishShiftActivity.this, "The shift has been inserted", Toast.LENGTH_LONG).show();
+                    logObj = new LogObj(currentDate, currentTime, null, null);
+                    dbHelper.insertCurrentEntryLog(logObj, userObj);
                     Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.good_luck_in_your_shift), Toast.LENGTH_LONG).show();
                     switchInOut.setChecked(false);
                     btnSetLog.setText("Finish");
                 } else {
                     LogObj entryLogForToday = dbHelper.getLogForUserByDate(userObj.id, currentDate);
                     entryLogForToday.setExitTime(currentTime);
+
+                    String totalTime = getTimeDifference(entryLogForToday.getEntryTime(), entryLogForToday.getExitTime());
+
+                    entryLogForToday.setTotalTime(totalTime);
                     dbHelper.updateCurrentExitLog(entryLogForToday);
                     Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.see_you_soon), Toast.LENGTH_LONG).show();
                     switchInOut.setChecked(true);
@@ -109,6 +128,9 @@ public class StartFinishShiftActivity extends AppCompatActivity {
 
         });
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -136,12 +158,68 @@ public class StartFinishShiftActivity extends AppCompatActivity {
                 startActivity(logsActivityIntent);
                 return true;
 
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public String getTimeDifference(String entryTime, String exitTime) {
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime start = LocalTime.parse(entryTime, f);
+        LocalTime stop = LocalTime.parse(exitTime, f);
+
+        Duration d = Duration.between(start, stop);
+        long minutes = d.toMinutes();
+
+        String totalTime = LocalTime.MIN.plus(
+                Duration.ofMinutes(minutes)
+        ).toString();
+
+        return totalTime;
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("StartFinishShift Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
 }

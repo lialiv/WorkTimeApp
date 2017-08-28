@@ -1,6 +1,7 @@
 package com.example.amirl2.myapplication.Activities;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,7 @@ public class LogsActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         lvLogs = (ListView) findViewById(R.id.lv_logs);
 
@@ -54,11 +56,19 @@ public class LogsActivity extends AppCompatActivity {
 
         for (int i = 0; i < listLogs.size(); ++i) {
             String date = listLogs.get(i).getDate();
-            String entryTime = "Enter: " + listLogs.get(i).getEntryTime();
-            String exitTime = "Exit: " + listLogs.get(i).getExitTime();
-            logListRowObjs.add(new LogListRowObj(date, entryTime, exitTime, "Total Time: "));
-        }
+            String entryTime = "Start time: ";
+            String exitTime = "End time: ";
+            String totalTime = "Total shift time: ";
 
+            if (listLogs.get(i).getEntryTime() != null)
+                 entryTime = entryTime + listLogs.get(i).getEntryTime();
+            if (listLogs.get(i).getExitTime() != null)
+                 exitTime = exitTime + listLogs.get(i).getExitTime();
+            if (listLogs.get(i).getTotalTime() != null)
+                 totalTime = totalTime + listLogs.get(i).getTotalTime();
+
+            logListRowObjs.add(new LogListRowObj(date, entryTime, exitTime, totalTime));
+        }
 
         listAdapter = new ListAdapter(logListRowObjs, getApplicationContext());
         lvLogs.setAdapter(listAdapter);
@@ -88,6 +98,10 @@ public class LogsActivity extends AppCompatActivity {
                 Intent mainActivityIntent = new Intent(LogsActivity.this, MainActivity.class);
                 startActivity(mainActivityIntent);
                 LogsActivity.this.finish();
+                return true;
+
+            case android.R.id.home:
+                finish();
                 return true;
 
             default:
