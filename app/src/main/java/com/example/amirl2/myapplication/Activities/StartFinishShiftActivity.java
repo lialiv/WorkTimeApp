@@ -3,7 +3,6 @@ package com.example.amirl2.myapplication.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -136,7 +135,7 @@ public class StartFinishShiftActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_start_finish_activity, menu);
         return true;
     }
 
