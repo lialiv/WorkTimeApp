@@ -29,6 +29,8 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -81,6 +83,9 @@ public class LogsActivity extends AppCompatActivity {
 
         ArrayList<LogObj> listLogs = dbHelper.getLogsForUser(userObj.id);
 
+        extractLogsList();
+
+
         for (int i = 0; i < listLogs.size(); ++i) {
             String date = listLogs.get(i).getDate();
             String entryTime = "Start time: ";
@@ -108,6 +113,10 @@ public class LogsActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private ArrayList<LogObj> extractLogsList() {
+        return null;
     }
 
     @Override
@@ -209,8 +218,18 @@ public class LogsActivity extends AppCompatActivity {
         Toast.makeText(LogsActivity.this, outputFile.getAbsoluteFile() + "", Toast.LENGTH_LONG).show();
 
         document.open();
-        document.add(new Paragraph("History Logs List - for user: " + userObj.getName()));
-        document.add(new Paragraph("First row of the list!"));
+
+        Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+        Paragraph title = new Paragraph("History Logs List - for user: " + userObj.getName(), boldFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        document.add(new Paragraph(title));
+
+        for (int i = 0; i < logListRowObjs.size(); i++) {
+            document.add(new Paragraph(" "));
+            LogListRowObj logListRowObj = logListRowObjs.get(i);
+            document.add(new Paragraph(logListRowObj.getDate()));
+            document.add(new Paragraph(logListRowObj.getEntryTime() + "   " + logListRowObj.getExitTime() + "   " + logListRowObj.getTotalTime()));
+        }
         document.close();
 //
 //        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
@@ -226,8 +245,7 @@ public class LogsActivity extends AppCompatActivity {
 //            intentShareFile.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //
 //            startActivity(Intent.createChooser(intentShareFile, "Share File"));
-        }
-
+    }
 
 
     /**
