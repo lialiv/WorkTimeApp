@@ -2,30 +2,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/holo_blue_dark"
-    android:padding="4dp"
-    >
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/tv_date"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="40dp"
-        android:paddingLeft="@dimen/list_horizontal_margin"
         android:background="@android:color/holo_blue_bright"
-        android:gravity="center_vertical"
         android:ellipsize="marquee"
+        android:gravity="center_vertical"
         android:maxLines="1"
+        android:paddingLeft="@dimen/list_horizontal_margin"
         android:text="Description"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size"
-        android:textStyle="bold"
-         />
-s
+        android:textStyle="bold" />
+    s
+
     <TextView
         android:id="@+id/tv_entry_time"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="40dp"
-        android:layout_below="@id/tv_date"
-        android:gravity="left|center_vertical"
+        android:layout_alignBaseline="@id/tv_date"
+        android:layout_toRightOf="@id/tv_date"
+        android:gravity="center"
         android:paddingLeft="@dimen/list_horizontal_margin"
         android:text="Example application"
         android:textColor="@android:color/black"
@@ -33,22 +33,23 @@ s
 
     <TextView
         android:id="@+id/tv_exit_time"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_alignBaseline="@id/tv_entry_time"
         android:layout_toRightOf="@id/tv_entry_time"
-        android:gravity="left|center_vertical"
+        android:gravity="center"
         android:text="Example application"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size" />
 
     <TextView
         android:id="@+id/tv_total_time"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_alignBaseline="@id/tv_exit_time"
         android:layout_toRightOf="@id/tv_exit_time"
-        android:gravity="left|center_vertical"
+        android:gravity="center"
+
         android:text="Example application"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size" />

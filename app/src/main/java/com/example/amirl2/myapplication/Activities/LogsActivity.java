@@ -80,17 +80,15 @@ public class LogsActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         userObj = data.getParcelable(getResources().getString(R.string.extra_user_obj));
-
         ArrayList<LogObj> listLogs = dbHelper.getLogsForUser(userObj.id);
-
         extractLogsList();
 
 
         for (int i = 0; i < listLogs.size(); ++i) {
             String date = listLogs.get(i).getDate();
-            String entryTime = "Start time: ";
-            String exitTime = "End time: ";
-            String totalTime = "Total shift time: ";
+            String entryTime = "";
+            String exitTime = "";
+            String totalTime ="";
 
             if (listLogs.get(i).getEntryTime() != null)
                 entryTime = entryTime + listLogs.get(i).getEntryTime();
@@ -205,7 +203,7 @@ public class LogsActivity extends AppCompatActivity {
 //        }
 //
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
-        String pdfName = "TryTryLogsHistoryList"
+        String pdfName = "LogsHistoryList"
                 + sdf.format(Calendar.getInstance().getTime()) + ".pdf";
 
         File outputFile = new File(Environment.getExternalStoragePublicDirectory(
@@ -215,12 +213,12 @@ public class LogsActivity extends AppCompatActivity {
 
         Document document = new Document(PageSize.LETTER);
         PdfWriter.getInstance(document, output);
-        Toast.makeText(LogsActivity.this, outputFile.getAbsoluteFile() + "", Toast.LENGTH_LONG).show();
+        Toast.makeText(LogsActivity.this, "Your history data has been saved in Documents folder" , Toast.LENGTH_LONG).show();
 
         document.open();
 
         Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-        Paragraph title = new Paragraph("History Logs List - for user: " + userObj.getName(), boldFont);
+        Paragraph title = new Paragraph("History Logs List - for " + userObj.getName(), boldFont);
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(new Paragraph(title));
 
@@ -246,6 +244,7 @@ public class LogsActivity extends AppCompatActivity {
 //
 //            startActivity(Intent.createChooser(intentShareFile, "Share File"));
     }
+
 
 
     /**

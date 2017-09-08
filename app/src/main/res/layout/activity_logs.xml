@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_history"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,35 +13,96 @@
     tools:context="com.example.amirl2.myapplication.Activities.LogsActivity">
 
     <android.support.v7.widget.Toolbar
-        android:layout_alignParentTop="true"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
-        android:text="@android:color/white"
         android:elevation="4dp"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:text="@android:color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <TextView
         android:id="@+id/tv_logs_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/logs_header"
-        android:textSize="@dimen/text_size_title"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
         android:layout_below="@id/toolbar"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:text="@string/logs_header"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_list_header_date"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/tv_logs_header"
+        android:background="@android:color/holo_blue_dark"
+        android:maxLines="1"
+        android:padding="@dimen/list_horizontal_margin"
+        android:text="Date"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+
         />
+
+    <TextView
+        android:id="@+id/tv_list_header_entry_time"
+        android:layout_width="310dp"
+        android:layout_height="45dp"
+        android:layout_alignBaseline="@id/tv_list_header_date"
+        android:layout_toRightOf="@id/tv_list_header_date"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="@dimen/list_horizontal_margin"
+        android:text="Entry Time"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_list_header_exit_time"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_alignBaseline="@id/tv_list_header_entry_time"
+        android:layout_toRightOf="@id/tv_list_header_entry_time"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="@dimen/list_horizontal_margin"
+        android:text="Exit Time"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_list_header_total_time"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_alignBaseline="@id/tv_list_header_exit_time"
+        android:layout_toRightOf="@id/tv_list_header_exit_time"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="@dimen/list_horizontal_margin"
+        android:text="Total Time"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold" />
+
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/lv_logs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_logs_header"
+        android:layout_below="@id/tv_list_header_date"
         android:dividerHeight="10dp"
-        />
+        android:paddingTop="2dp" />
 
 </RelativeLayout>

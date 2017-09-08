@@ -64,13 +64,11 @@ public class StartFinishShiftActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat date = new SimpleDateFormat("dd-MMM-yy");
-        SimpleDateFormat day = new SimpleDateFormat("EEEE");
+        SimpleDateFormat date = new SimpleDateFormat("EEEE, dd-MMM-yy");
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
         currentDate = date.format(calendar.getTime());
-        currentDay = day.format(calendar.getTime());
         currentTime = time.format(calendar.getTime());
-        tvDate.setText(currentDay + " " + currentDate);
+        tvDate.setText(currentDate);
 
         Bundle data = getIntent().getExtras();
         userObj = data.getParcelable("user");

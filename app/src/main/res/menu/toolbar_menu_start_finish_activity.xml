@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_logs"
-        android:title="My Logs"
+        android:title="Records"
         app:showAsAction="always" />
 
     <item

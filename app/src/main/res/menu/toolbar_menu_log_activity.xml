@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_print_log"
         app:showAsAction="always"
-        android:title="Print" />
+        android:title="Create PDF" />
 
 
     <item

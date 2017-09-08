@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Work Time</string>
-    <string name="logs_header">Work Logs History</string>
+    <string name="logs_header">Work Times History</string>
     <string name="password_not_strong">The password is not strong enough! \nPassword should have 8 characters and include:
         uppercase and lowercase letters and numbers</string>
     <string name="username_not_long">Username must be at list 8 characters long</string>

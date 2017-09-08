@@ -2,7 +2,6 @@ package com.example.amirl2.myapplication.Accessories;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by AmirL2 on 8/4/2017.
@@ -68,9 +66,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void createNewLog() {
-
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy");
         String currentDate = sdf.format(calendar.getTime());
     }
 
