@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name="com.example.amirl2.myapplication.Activities.NewUserActivity"
+            android:label="@string/create_new_user"
             android:parentActivityName="com.example.amirl2.myapplication.Activities.MainActivity" />
         <activity
             android:name="com.example.amirl2.myapplication.Activities.StartFinishShiftActivity"
