@@ -11,19 +11,22 @@ public class UserObj implements Parcelable
 
 {
     public int id;
-    public String name;
+    public String firstName;
+    public String lastName;
     public String username;
     public String password;
 
-    public UserObj(int id, String name, String username, String password) {
+    public UserObj(int id, String firstName, String lastName, String username, String password) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
     }
 
-    public UserObj(String name, String username, String password) {
-        this.name = name;
+    public UserObj(String firstName, String lastName, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
     }
@@ -39,12 +42,20 @@ public class UserObj implements Parcelable
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName= firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName= lastName;
     }
 
     public String getUsername() {
@@ -66,7 +77,8 @@ public class UserObj implements Parcelable
     // For Parcelable
     public UserObj(Parcel in) {
             this.id = in.readInt();
-            this.name = in.readString();
+            this.firstName = in.readString();
+            this.lastName = in.readString();
             this.username = in.readString();
             this.password =  in.readString();
         }
@@ -80,7 +92,8 @@ public class UserObj implements Parcelable
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(this.id);
-        parcel.writeString(this.name);
+        parcel.writeString(this.firstName);
+        parcel.writeString(this.lastName);
         parcel.writeString(this.username);
         parcel.writeString(this.password);
 
@@ -103,13 +116,12 @@ public class UserObj implements Parcelable
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                ", first name='" + firstName + '\'' +
+                ", last name='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
-
-
 
 }
 

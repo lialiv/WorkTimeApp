@@ -21,7 +21,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static final String USERS_TABLE_NAME = "users";
     public static final String USERS_COLUMN_ID = "id";
-    public static final String USERS_COLUMN_NAME = "name";
+    public static final String USERS_COLUMN_FIRST_NAME = "first_name";
+    public static final String USERS_COLUMN_LAST_NAME = "last_name";
     public static final String USERS_COLUMN_USERNAME = "username";
     public static final String USERS_COLUMN_PASSWORD = "password";
 
@@ -46,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(
                 "create table " + USERS_TABLE_NAME
                         + " ( " + USERS_COLUMN_ID + " integer primary key autoincrement, "
-                        + USERS_COLUMN_NAME + " text, " + USERS_COLUMN_USERNAME + " text, " + USERS_COLUMN_PASSWORD + " text )"
+                        + USERS_COLUMN_FIRST_NAME + " text, " + USERS_COLUMN_LAST_NAME + " text, " + USERS_COLUMN_USERNAME + " text, " + USERS_COLUMN_PASSWORD + " text )"
         );
 
         db.execSQL(
@@ -71,14 +72,15 @@ public class DBHelper extends SQLiteOpenHelper {
         String currentDate = sdf.format(calendar.getTime());
     }
 
-    public boolean createNewUser(UserObj user) {
+    public long createNewUser(UserObj user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USERS_COLUMN_NAME, user.getName());
+        contentValues.put(USERS_COLUMN_FIRST_NAME, user.getFirstName());
+        contentValues.put(USERS_COLUMN_LAST_NAME, user.getLastName());
         contentValues.put(USERS_COLUMN_USERNAME, user.getUsername());
         contentValues.put(USERS_COLUMN_PASSWORD, user.getPassword());
-        db.insert(USERS_TABLE_NAME, null, contentValues);
-        return true;
+        long userId = db.insert(USERS_TABLE_NAME, null, contentValues);
+        return userId;
     }
 
     public LogObj getLogForUserByDate(int id, String date) {
@@ -145,7 +147,8 @@ public class DBHelper extends SQLiteOpenHelper {
         while (res.isAfterLast() == false) {
             UserObj user = new UserObj();
             user.setId((res.getInt(res.getColumnIndex(USERS_COLUMN_ID))));
-            user.setName((res.getString(res.getColumnIndex(USERS_COLUMN_NAME))));
+            user.setFirstName((res.getString(res.getColumnIndex(USERS_COLUMN_FIRST_NAME))));
+            user.setLastName((res.getString(res.getColumnIndex(USERS_COLUMN_LAST_NAME))));
             user.setUsername((res.getString(res.getColumnIndex(USERS_COLUMN_USERNAME))));
             user.setPassword((res.getString(res.getColumnIndex(USERS_COLUMN_PASSWORD))));
             usersList.add(user);
@@ -182,10 +185,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery(
                 "SELECT * FROM " + USERS_TABLE_NAME + " WHERE " + USERS_COLUMN_ID + "='" + userId + "';", null);
         res.moveToFirst();
-        String name = res.getString(res.getColumnIndex(USERS_COLUMN_NAME));
+        String firstName = res.getString(res.getColumnIndex(USERS_COLUMN_FIRST_NAME));
+        String lastName = res.getString(res.getColumnIndex(USERS_COLUMN_LAST_NAME));
         String username = res.getString(res.getColumnIndex(USERS_COLUMN_USERNAME));
         String password = res.getString(res.getColumnIndex(USERS_COLUMN_PASSWORD));
-        UserObj user = new UserObj(userId, name, username, password);
+        UserObj user = new UserObj(userId, firstName, lastName, username, password);
         return user;
     }
 

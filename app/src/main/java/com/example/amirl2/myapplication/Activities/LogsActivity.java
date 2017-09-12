@@ -218,7 +218,7 @@ public class LogsActivity extends AppCompatActivity {
         document.open();
 
         Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-        Paragraph title = new Paragraph("History Logs List - for " + userObj.getName(), boldFont);
+        Paragraph title = new Paragraph("History Logs List - for " + userObj.getFirstName() +" " + userObj.getLastName(), boldFont);
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(new Paragraph(title));
 

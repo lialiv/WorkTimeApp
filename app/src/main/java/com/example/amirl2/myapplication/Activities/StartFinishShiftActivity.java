@@ -72,7 +72,7 @@ public class StartFinishShiftActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         userObj = data.getParcelable("user");
-        tvWelcomeUser.setText("Welcome " + userObj.getName());
+        tvWelcomeUser.setText("Welcome " + userObj.getFirstName() + " " + userObj.getLastName());
         LogObj entryLogForToday = dbHelper.getLogForUserByDate(userObj.id, currentDate);
 
         if (entryLogForToday.id != 0) {

@@ -16,7 +16,7 @@ import com.example.amirl2.myapplication.Accessories.UserObj;
 import com.example.amirl2.myapplication.R;
 
 public class NewUserActivity extends AppCompatActivity {
-    EditText etName;
+    EditText etFirstName, etLastName;
     EditText etUsername;
     EditText etPassword;
     EditText etPasswordRetype;
@@ -29,7 +29,8 @@ public class NewUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user);
 
-        etName = (EditText) findViewById(R.id.et_name);
+        etFirstName = (EditText) findViewById(R.id.et_first_name);
+        etLastName = (EditText) findViewById(R.id.et_last_name);
         etUsername = (EditText) findViewById(R.id.et_username);
         etPassword = (EditText) findViewById(R.id.et_password);
         etPasswordRetype = (EditText) findViewById(R.id.et_password_retype);
@@ -43,7 +44,8 @@ public class NewUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String name = etName.getText().toString();
+                String firstName = etFirstName.getText().toString();
+                String lastName = etLastName.getText().toString();
                 String username = etUsername.getText().toString().toLowerCase();
                 String password = etPassword.getText().toString();
                 String passwordRetype = etPasswordRetype.getText().toString();
@@ -52,9 +54,10 @@ public class NewUserActivity extends AppCompatActivity {
                     Toast.makeText(NewUserActivity.this, getResources().getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
                 else {
                     if (dbHelper.checkUsernameAvailability(username)) {
-                        UserObj newUser = new UserObj(name, username, password);
-                        boolean created = dbHelper.createNewUser(newUser);
-                        if (created) {
+                        UserObj newUser = new UserObj(firstName, lastName, username, password);
+                        long userId = dbHelper.createNewUser(newUser);
+                        if (userId != -1) {
+                            newUser.setId(Long.valueOf(userId).intValue());
                             Intent logsActivityIntent = new Intent(NewUserActivity.this, StartFinishShiftActivity.class);
                             logsActivityIntent.putExtra("user", newUser);
                             startActivity(logsActivityIntent);
@@ -102,10 +105,10 @@ public class NewUserActivity extends AppCompatActivity {
                     tvPassStrength.setText(getResources().getString(R.string.password_not_strong));
                     tvPassStrength.setVisibility(View.VISIBLE);
                 }
-            } else if ((etUsername.length()) < 8){
+            } else if ((etUsername.length()) < 8) {
                 tvUserLong.setText(getResources().getString(R.string.username_not_long));
                 tvUserLong.setVisibility(View.VISIBLE);
-            }else if ((etUsername.length()) > 24){
+            } else if ((etUsername.length()) > 24) {
                 tvUserLong.setText(getResources().getString(R.string.username_too_long));
                 tvUserLong.setVisibility(View.VISIBLE);
             }
@@ -115,7 +118,15 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private boolean isStrong(String password) {
-        return password.matches("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,24}$");
+        if
+                (password.matches("^(?=.*[0-9])(?=.*[a-z]).{8,24}$") ||
+                password.matches("^(?=.*[A-Z])(?=.*[0-9]).{8,24}$") ||
+                password.matches("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,24}$"))
+
+        {
+            return true;
+        } else
+            return false;
     }
 
 }
