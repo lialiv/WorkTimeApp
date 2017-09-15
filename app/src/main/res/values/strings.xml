@@ -2,6 +2,14 @@
     <string name="app_name">Work Time</string>
     <string name="create_new_user">Create New User</string>
 
+    <string name="extra_user">extraUser</string>
+    <string name="extra_user_obj">extraUserObj</string>
+
+
+    <string name="finish_shift">Finish Shift</string>
+    <string name="start_shift">Start Shift</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
     <string name="logs_header">Work Times History</string>
     <string name="password_not_strong">The password is not strong enough! \nPassword should have 8 characters and include:
         uppercase and lowercase letters and numbers</string>
@@ -12,5 +20,10 @@
     <string name="good_luck_in_your_shift">Enjoy your shift! \nPlease logout to keep your data safe</string>
     <string name="see_you_soon">Hope it was a good shift! See you soon\nPlease logout to keep your data safe</string>
 
-    <string name="extra_user_obj">extraUserObj</string>
+
+    <string name="time_pattern">HH:mm</string>
+
+
+
+
 </resources>

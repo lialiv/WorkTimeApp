@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.amirl2.myapplication.Accessories.DBHelper;
+import com.example.amirl2.myapplication.Accessories.LayoutAccess;
 import com.example.amirl2.myapplication.Accessories.ListAdapter;
 import com.example.amirl2.myapplication.Accessories.LogListRowObj;
 import com.example.amirl2.myapplication.Accessories.LogObj;
@@ -89,15 +89,22 @@ public class LogsActivity extends AppCompatActivity {
             String entryTime = "";
             String exitTime = "";
             String totalTime ="";
+            String notes = "";
 
-            if (listLogs.get(i).getEntryTime() != null)
+            if (listLogs.get(i).getEntryTime() != null) {
                 entryTime = entryTime + listLogs.get(i).getEntryTime();
-            if (listLogs.get(i).getExitTime() != null)
+            }
+            if (listLogs.get(i).getExitTime() != null) {
                 exitTime = exitTime + listLogs.get(i).getExitTime();
-            if (listLogs.get(i).getTotalTime() != null)
+            }
+            if (listLogs.get(i).getTotalTime() != null) {
                 totalTime = totalTime + listLogs.get(i).getTotalTime();
+            }
+            if (listLogs.get(i).getNotes() != null) {
+                notes = listLogs.get(i).getNotes();
+            }
 
-            logListRowObjs.add(new LogListRowObj(date, entryTime, exitTime, totalTime));
+            logListRowObjs.add(new LogListRowObj(date, entryTime, exitTime, totalTime, notes));
         }
 
         listAdapter = new ListAdapter(logListRowObjs, getApplicationContext());
@@ -202,7 +209,7 @@ public class LogsActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 //
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy_hhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_hhmmss");
         String pdfName = "LogsHistoryList"
                 + sdf.format(Calendar.getInstance().getTime()) + ".pdf";
 
@@ -213,20 +220,23 @@ public class LogsActivity extends AppCompatActivity {
 
         Document document = new Document(PageSize.LETTER);
         PdfWriter.getInstance(document, output);
-        Toast.makeText(LogsActivity.this, "Your history data has been saved in Documents folder" , Toast.LENGTH_LONG).show();
+        LayoutAccess.ToastMsgInflater(LogsActivity.this, "Create and Save PDF", "Your history data has been saved in Documents folder");
 
         document.open();
 
         Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
         Paragraph title = new Paragraph("History Logs List - for " + userObj.getFirstName() +" " + userObj.getLastName(), boldFont);
+        sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm");
+        Paragraph dateTime = new Paragraph("Created on: " + sdf.format(Calendar.getInstance().getTime()), boldFont);
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(new Paragraph(title));
+        document.add(new Paragraph(dateTime));
 
         for (int i = 0; i < logListRowObjs.size(); i++) {
             document.add(new Paragraph(" "));
             LogListRowObj logListRowObj = logListRowObjs.get(i);
             document.add(new Paragraph(logListRowObj.getDate()));
-            document.add(new Paragraph(logListRowObj.getEntryTime() + "   " + logListRowObj.getExitTime() + "   " + logListRowObj.getTotalTime()));
+            document.add(new Paragraph("Entry Time: " + logListRowObj.getEntryTime() + "   Exit Time: " + logListRowObj.getExitTime() + "   Total Time: " + logListRowObj.getTotalTime() + "   Notes: " + logListRowObj.getNotes()));
         }
         document.close();
 //

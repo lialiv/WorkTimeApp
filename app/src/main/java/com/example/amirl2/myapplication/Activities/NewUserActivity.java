@@ -116,6 +116,7 @@ public class NewUserActivity extends AppCompatActivity {
                     } else {
                         tvPassStrength.setText(getResources().getString(R.string.password_not_strong));
                         tvPassStrength.setVisibility(View.VISIBLE);
+
                     }
                 }
             } else if (etUsername.length() > 0 && etUsername.length() < 8) {

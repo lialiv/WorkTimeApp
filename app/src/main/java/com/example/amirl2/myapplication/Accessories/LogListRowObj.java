@@ -9,12 +9,14 @@ public class LogListRowObj {
     String entryTime;
     String exitTime;
     String totalTime;
+    String notes;
 
-    public LogListRowObj(String date, String entryTime, String exitTime, String totalTime) {
+    public LogListRowObj(String date, String entryTime, String exitTime, String totalTime, String notes) {
         this.date=date;
         this.entryTime=entryTime;
         this.exitTime=exitTime;
         this.totalTime=totalTime;
+        this.notes=notes;
 
     }
 
@@ -48,6 +50,14 @@ public class LogListRowObj {
 
     public void setTotalTime(String totalTime) {
         this.totalTime = totalTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
 

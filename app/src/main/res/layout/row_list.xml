@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/tv_date"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="40dp"
         android:background="@android:color/holo_blue_bright"
         android:ellipsize="marquee"
@@ -17,11 +17,11 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size"
         android:textStyle="bold" />
-    s
+
 
     <TextView
         android:id="@+id/tv_entry_time"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="40dp"
         android:layout_alignBaseline="@id/tv_date"
         android:layout_toRightOf="@id/tv_date"
@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/tv_exit_time"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="40dp"
         android:layout_alignBaseline="@id/tv_entry_time"
         android:layout_toRightOf="@id/tv_entry_time"
@@ -44,14 +44,25 @@
 
     <TextView
         android:id="@+id/tv_total_time"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="40dp"
         android:layout_alignBaseline="@id/tv_exit_time"
         android:layout_toRightOf="@id/tv_exit_time"
         android:gravity="center"
-
         android:text="Example application"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size" />
+
+
+    <TextView
+        android:id="@+id/tv_notes"
+        android:layout_width="@dimen/list_column_wide"
+        android:layout_height="40dp"
+        android:layout_alignBaseline="@id/tv_total_time"
+        android:layout_toRightOf="@id/tv_total_time"
+        android:gravity="center"
+        android:text="Notes"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/small_text_size" />
 
 </RelativeLayout>

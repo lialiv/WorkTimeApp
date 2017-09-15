@@ -4,15 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.amirl2.myapplication.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -31,6 +26,8 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
         TextView tvEntryTime;
         TextView tvExitTime;
         TextView tvTotalTime;
+        TextView tvNotes;
+
     }
 
     public ListAdapter(ArrayList<LogListRowObj> data, Context context) {
@@ -69,6 +66,7 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
             viewHolder.tvEntryTime = convertView.findViewById(R.id.tv_entry_time);
             viewHolder.tvExitTime = convertView.findViewById(R.id.tv_exit_time);
             viewHolder.tvTotalTime = convertView.findViewById(R.id.tv_total_time);
+            viewHolder.tvNotes = convertView.findViewById(R.id.tv_notes);
 
             convertView.setTag(viewHolder);
         } else {
@@ -79,6 +77,7 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
         viewHolder.tvEntryTime.setText(logListRowObj.getEntryTime());
         viewHolder.tvExitTime.setText(logListRowObj.getExitTime());
         viewHolder.tvTotalTime.setText(logListRowObj.getTotalTime());
+        viewHolder.tvNotes.setText("" + logListRowObj.getNotes());
         return convertView;
     }
 }

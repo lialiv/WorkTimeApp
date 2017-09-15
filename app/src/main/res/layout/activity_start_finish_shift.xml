@@ -20,6 +20,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:text="@android:color/white"
+        android:logo="@drawable/clock_date"
         android:elevation="4dp"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -37,7 +38,7 @@
     <TextView
         android:id="@+id/tv_date"
         style="@style/Header"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:textSize="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
     <Switch
         android:id="@+id/switch_in_out"
         style="@style/Header"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:layout_width="@dimen/layout_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/tc_time"
@@ -77,5 +78,18 @@
         android:text="start"
         android:textSize="@dimen/text_size_title"
         style="@style/Header" />
+
+    <EditText
+        android:id="@+id/et_notes"
+        android:layout_width="@dimen/layout_width"
+        android:layout_height="@dimen/layout_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="Add note"
+        android:textSize="@dimen/text_size"
+        android:gravity="center"
+        />
 
 </RelativeLayout>

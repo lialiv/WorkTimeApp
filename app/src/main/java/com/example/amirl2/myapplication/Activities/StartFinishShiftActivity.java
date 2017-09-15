@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +36,14 @@ public class StartFinishShiftActivity extends AppCompatActivity {
     TextView tvDate, tvWelcomeUser;
     Switch switchInOut;
     Button btnSetLog;
+    EditText etNotes;
     Toolbar toolbar;
 
     DBHelper dbHelper;
     UserObj userObj;
     LogObj logObj;
     String currentDate, currentDay, currentTime;
+    SimpleDateFormat time;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -56,29 +59,32 @@ public class StartFinishShiftActivity extends AppCompatActivity {
         tvDate = (TextView) findViewById(R.id.tv_date);
         switchInOut = (Switch) findViewById(R.id.switch_in_out);
         btnSetLog = (Button) findViewById(R.id.btn_set_log);
+        etNotes = (EditText) findViewById(R.id.et_notes);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         dbHelper = new DBHelper(this);
+//        toolbar.setLogo(R.drawable.clock_date);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("EEEE, dd-MMM-yy");
-        SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+        time = new SimpleDateFormat(getResources().getString(R.string.time_pattern));
         currentDate = date.format(calendar.getTime());
         currentTime = time.format(calendar.getTime());
         tvDate.setText(currentDate);
 
         Bundle data = getIntent().getExtras();
-        userObj = data.getParcelable("user");
+        userObj = data.getParcelable(getResources().getString(R.string.extra_user));
         tvWelcomeUser.setText("Welcome " + userObj.getFirstName() + " " + userObj.getLastName());
         LogObj entryLogForToday = dbHelper.getLogForUserByDate(userObj.id, currentDate);
 
         if (entryLogForToday.id != 0) {
             switchInOut.setChecked(false);
-            switchInOut.setText("Finish Shift");
-            btnSetLog.setText("Finish");
+            switchInOut.setText(getResources().getString(R.string.finish_shift));
+            btnSetLog.setText(getResources().getString(R.string.finish));
             logObj = entryLogForToday;
         }
 
@@ -86,11 +92,11 @@ public class StartFinishShiftActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    switchInOut.setText("Start Shift");
-                    btnSetLog.setText("Start");
+                    switchInOut.setText(getResources().getString(R.string.start_shift));
+                    btnSetLog.setText(getResources().getString(R.string.start));
                 } else if (!isChecked) {
-                    switchInOut.setText("Finish Shift");
-                    btnSetLog.setText("Finish");
+                    switchInOut.setText(getResources().getString(R.string.finish_shift));
+                    btnSetLog.setText(getResources().getString(R.string.finish));
                 }
             }
         });
@@ -99,26 +105,27 @@ public class StartFinishShiftActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat time = new SimpleDateFormat("HH:mm");
                 currentTime = time.format(calendar.getTime());
+                String note = "";
+                note = etNotes.getText().toString();
 
                 if (switchInOut.isChecked()) {
-                    logObj = new LogObj(currentDate, currentTime, null, null);
+                    logObj = new LogObj(currentDate, currentTime, null, null, note);
                     dbHelper.insertCurrentEntryLog(logObj, userObj);
                     Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.good_luck_in_your_shift), Toast.LENGTH_LONG).show();
                     switchInOut.setChecked(false);
-                    btnSetLog.setText("Finish");
+                    btnSetLog.setText(getResources().getString(R.string.finish));
                 } else {
                     LogObj entryLogForToday = dbHelper.getLogForUserByDate(userObj.id, currentDate);
                     entryLogForToday.setExitTime(currentTime);
-
                     String totalTime = getTimeDifference(entryLogForToday.getEntryTime(), entryLogForToday.getExitTime());
-
                     entryLogForToday.setTotalTime(totalTime);
+                    note += entryLogForToday.getNotes();
+                    entryLogForToday.setNotes(note);
                     dbHelper.updateCurrentExitLog(entryLogForToday);
                     Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.see_you_soon), Toast.LENGTH_LONG).show();
                     switchInOut.setChecked(true);
-                    btnSetLog.setText("Start");
+                    btnSetLog.setText(getResources().getString(R.string.start));
                 }
 
             }
@@ -169,7 +176,7 @@ public class StartFinishShiftActivity extends AppCompatActivity {
 
     public String getTimeDifference(String entryTime, String exitTime) {
 
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter f = DateTimeFormatter.ofPattern(getResources().getString(R.string.time_pattern));
         LocalTime start = LocalTime.parse(entryTime, f);
         LocalTime stop = LocalTime.parse(exitTime, f);
 

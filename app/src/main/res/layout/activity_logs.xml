@@ -38,7 +38,7 @@
 
     <TextView
         android:id="@+id/tv_list_header_date"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="45dp"
         android:layout_below="@id/tv_logs_header"
         android:background="@android:color/holo_blue_dark"
@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/tv_list_header_entry_time"
-        android:layout_width="310dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="45dp"
         android:layout_alignBaseline="@id/tv_list_header_date"
         android:layout_toRightOf="@id/tv_list_header_date"
@@ -68,7 +68,7 @@
 
     <TextView
         android:id="@+id/tv_list_header_exit_time"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="45dp"
         android:layout_alignBaseline="@id/tv_list_header_entry_time"
         android:layout_toRightOf="@id/tv_list_header_entry_time"
@@ -83,7 +83,7 @@
 
     <TextView
         android:id="@+id/tv_list_header_total_time"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/list_column_wide"
         android:layout_height="45dp"
         android:layout_alignBaseline="@id/tv_list_header_exit_time"
         android:layout_toRightOf="@id/tv_list_header_exit_time"
@@ -92,6 +92,21 @@
         android:maxLines="1"
         android:padding="@dimen/list_horizontal_margin"
         android:text="Total Time"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_list_header_notes"
+        android:layout_width="@dimen/list_column_wide"
+        android:layout_height="45dp"
+        android:layout_alignBaseline="@id/tv_list_header_total_time"
+        android:layout_toRightOf="@id/tv_list_header_total_time"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="@dimen/list_horizontal_margin"
+        android:text="Notes"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size"
         android:textStyle="bold" />

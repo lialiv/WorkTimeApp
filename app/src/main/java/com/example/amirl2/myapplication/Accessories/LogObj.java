@@ -11,29 +11,34 @@ public class LogObj {
     public String entryTime;
     public String exitTime;
     public String totalTime;
+    public String notes;
 
     public LogObj() {
     }
 
-    public LogObj(int id, String date, String entryTime, String exitTime, String totalTime) {
+    public LogObj(int id, String date, String entryTime, String exitTime, String totalTime, String notes) {
         this.id = id;
         this.date = date;
         this.entryTime = entryTime;
         this.exitTime = exitTime;
         this.totalTime = totalTime;
+        this.notes = notes;
     }
 
-    public LogObj(String date, String exitTime, String totalTime) {
+    public LogObj(String date, String exitTime, String totalTime, String notes) {
         this.date = date;
         this.exitTime = exitTime;
         this.totalTime = totalTime;
+        this.notes = notes;
     }
 
-    public LogObj(String date, String entryTime, String exitTime, String totalTime) {
+    public LogObj(String date, String entryTime, String exitTime, String totalTime, String notes) {
         this.date = date;
         this.entryTime = entryTime;
         this.exitTime = exitTime;
         this.totalTime = totalTime;
+        this.notes = notes;
+
     }
 
 
@@ -75,5 +80,13 @@ public class LogObj {
 
     public void setTotalTime(String totalTime) {
         this.totalTime = totalTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

@@ -32,6 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String LOGS_COLUMN_ENTRY_TIME = "entry_time";
     public static final String LOGS_COLUMN_EXIT_TIME = "exit_time";
     public static final String LOGS_COLUMN_TOTAL_TIME = "total_time";
+    public static final String LOGS_COLUMN_NOTES = "notes";
     public static final String LOGS_COLUMN_FK_USERS_USER_ID = "user_id";
     public Context context;
 
@@ -55,6 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         + " ( " + LOGS_COLUMN_ID + " integer primary key autoincrement, " + LOGS_COLUMN_DATE
                         + " text, " + LOGS_COLUMN_ENTRY_TIME + " text, " + LOGS_COLUMN_EXIT_TIME + " text, "
                         + LOGS_COLUMN_FK_USERS_USER_ID + " integer, " + LOGS_COLUMN_TOTAL_TIME + " text, "
+                        + LOGS_COLUMN_NOTES + " text, "
                         + " foreign key " + "(" + LOGS_COLUMN_FK_USERS_USER_ID + ")" + " references " + USERS_TABLE_NAME + " ( " + USERS_COLUMN_ID + " ))"
         );
     }
@@ -93,6 +95,8 @@ public class DBHelper extends SQLiteOpenHelper {
             logObj.setDate((res.getString(res.getColumnIndex(LOGS_COLUMN_DATE))));
             logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));
             logObj.setExitTime((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME))));
+            logObj.setTotalTime(res.getString(res.getColumnIndex(LOGS_COLUMN_TOTAL_TIME)));
+            logObj.setNotes(res.getString(res.getColumnIndex(LOGS_COLUMN_NOTES)));
         }
         return logObj;
     }
@@ -110,6 +114,7 @@ public class DBHelper extends SQLiteOpenHelper {
             logObj.setEntryTime((res.getString(res.getColumnIndex(LOGS_COLUMN_ENTRY_TIME))));
             logObj.setExitTime((res.getString(res.getColumnIndex(LOGS_COLUMN_EXIT_TIME))));
             logObj.setTotalTime((res.getString(res.getColumnIndex(LOGS_COLUMN_TOTAL_TIME))));
+            logObj.setNotes((res.getString(res.getColumnIndex(LOGS_COLUMN_NOTES))));
             listLogs.add(logObj);
             res.moveToNext();
         }
@@ -127,6 +132,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(LOGS_COLUMN_EXIT_TIME, logObj.exitTime);
         contentValues.put(LOGS_COLUMN_TOTAL_TIME, logObj.totalTime);
+        contentValues.put(LOGS_COLUMN_NOTES, logObj.notes);
+
         db.update(LOGS_TABLE_NAME, contentValues, LOGS_COLUMN_ID + " = " + logObj.id, null);
         return true;
     }
@@ -200,6 +207,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LOGS_COLUMN_ENTRY_TIME, logObj.entryTime);
         contentValues.put(LOGS_COLUMN_EXIT_TIME, logObj.exitTime);
         contentValues.put(LOGS_COLUMN_TOTAL_TIME, logObj.totalTime);
+        contentValues.put(LOGS_COLUMN_NOTES, logObj.notes);
         contentValues.put(LOGS_COLUMN_FK_USERS_USER_ID, userObj.id);
         long inserted = db.insert(LOGS_TABLE_NAME, null, contentValues);
 
