@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toast_msg_layout"
-    style="@style/ToastMsg"
+    android:id="@+id/dialog_msg_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="@dimen/padding"
+    android:background="@android:color/background_light"
     >
 
     <ImageView
@@ -15,7 +15,7 @@
         android:src="@drawable/clock_date" />
 
     <TextView
-        android:id="@+id/tv_toast_header"
+        android:id="@+id/tv_dialog_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -26,12 +26,13 @@
         />
 
     <TextView
-        android:id="@+id/tv_toast_text"
+        android:id="@+id/tv_dialog_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/tv_toast_header"
-        android:layout_below="@id/tv_toast_header"
+        android:layout_alignStart="@id/tv_dialog_header"
+        android:layout_below="@id/tv_dialog_header"
         android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold"
         android:textSize="25dp"
 
         />

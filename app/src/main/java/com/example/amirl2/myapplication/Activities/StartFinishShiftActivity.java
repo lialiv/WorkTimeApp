@@ -2,9 +2,9 @@ package com.example.amirl2.myapplication.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.amirl2.myapplication.Accessories.DBHelper;
+import com.example.amirl2.myapplication.Accessories.LayoutAccess;
 import com.example.amirl2.myapplication.Accessories.LogObj;
 import com.example.amirl2.myapplication.Accessories.UserObj;
 import com.example.amirl2.myapplication.R;
@@ -68,7 +68,6 @@ public class StartFinishShiftActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("EEEE, dd-MMM-yy");
         time = new SimpleDateFormat(getResources().getString(R.string.time_pattern));
@@ -86,6 +85,7 @@ public class StartFinishShiftActivity extends AppCompatActivity {
             switchInOut.setText(getResources().getString(R.string.finish_shift));
             btnSetLog.setText(getResources().getString(R.string.finish));
             logObj = entryLogForToday;
+            etNotes.setText(logObj.getNotes());
         }
 
         switchInOut.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -112,7 +112,7 @@ public class StartFinishShiftActivity extends AppCompatActivity {
                 if (switchInOut.isChecked()) {
                     logObj = new LogObj(currentDate, currentTime, null, null, note);
                     dbHelper.insertCurrentEntryLog(logObj, userObj);
-                    Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.good_luck_in_your_shift), Toast.LENGTH_LONG).show();
+                    LayoutAccess.ToastMsgInflater(StartFinishShiftActivity.this, "Shift Started", getResources().getString(R.string.good_luck_in_your_shift));
                     switchInOut.setChecked(false);
                     btnSetLog.setText(getResources().getString(R.string.finish));
                 } else {
@@ -123,9 +123,11 @@ public class StartFinishShiftActivity extends AppCompatActivity {
                     note += entryLogForToday.getNotes();
                     entryLogForToday.setNotes(note);
                     dbHelper.updateCurrentExitLog(entryLogForToday);
-                    Toast.makeText(StartFinishShiftActivity.this, getResources().getString(R.string.see_you_soon), Toast.LENGTH_LONG).show();
+                    LayoutAccess.ToastMsgInflater(StartFinishShiftActivity.this, "End Shift", getResources().getString(R.string.see_you_soon));
+
                     switchInOut.setChecked(true);
                     btnSetLog.setText(getResources().getString(R.string.start));
+                    etNotes.setText("");
                 }
 
             }

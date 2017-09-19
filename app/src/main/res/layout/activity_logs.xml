@@ -23,24 +23,13 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <TextView
-        android:id="@+id/tv_logs_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:gravity="center"
-        android:text="@string/logs_header"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_title"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_list_header_date"
         android:layout_width="@dimen/list_column_wide"
         android:layout_height="45dp"
-        android:layout_below="@id/tv_logs_header"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@android:color/holo_blue_dark"
         android:maxLines="1"
         android:padding="@dimen/list_horizontal_margin"

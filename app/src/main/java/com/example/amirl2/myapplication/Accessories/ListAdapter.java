@@ -1,6 +1,7 @@
 package com.example.amirl2.myapplication.Accessories;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import com.example.amirl2.myapplication.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by AmirL2 on 8/26/2017.
@@ -19,6 +22,7 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
 
     private ArrayList<LogListRowObj> dataSet;
     Context mContext;
+    private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
 
     // View lookup cache
     private static class ViewHolder {
@@ -36,6 +40,32 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
         this.mContext=context;
 
     }
+
+    public void setNewSelection(int position, boolean value) {
+        mSelection.put(position, value);
+        notifyDataSetChanged();
+    }
+
+    public boolean isPositionChecked(int position) {
+        Boolean result = mSelection.get(position);
+        return result == null ? false : result;
+    }
+
+    public Set<Integer> getCurrentCheckedPosition() {
+        return mSelection.keySet();
+    }
+
+    public void removeSelection(int position) {
+        mSelection.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void clearSelection() {
+        mSelection = new HashMap<Integer, Boolean>();
+        notifyDataSetChanged();
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -57,6 +87,7 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
 
         final View result;
 
+
         if (convertView == null) {
 
             viewHolder = new ViewHolder();
@@ -68,9 +99,11 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
             viewHolder.tvTotalTime = convertView.findViewById(R.id.tv_total_time);
             viewHolder.tvNotes = convertView.findViewById(R.id.tv_notes);
 
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
+
         }
 
         viewHolder.tvDate.setText(logListRowObj.getDate());
@@ -78,9 +111,13 @@ public class ListAdapter extends ArrayAdapter<LogListRowObj> implements View.OnC
         viewHolder.tvExitTime.setText(logListRowObj.getExitTime());
         viewHolder.tvTotalTime.setText(logListRowObj.getTotalTime());
         viewHolder.tvNotes.setText("" + logListRowObj.getNotes());
+
+        if (mSelection.get(position) != null)
+            convertView.setBackgroundColor(Color.RED);// this is a selected position so make it red
+
+        else
+            convertView.setBackgroundColor(17170451);
+
         return convertView;
     }
 }
-
-
-

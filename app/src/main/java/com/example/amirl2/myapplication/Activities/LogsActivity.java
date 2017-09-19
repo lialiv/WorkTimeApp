@@ -3,16 +3,20 @@ package com.example.amirl2.myapplication.Activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -88,7 +92,7 @@ public class LogsActivity extends AppCompatActivity {
             String date = listLogs.get(i).getDate();
             String entryTime = "";
             String exitTime = "";
-            String totalTime ="";
+            String totalTime = "";
             String notes = "";
 
             if (listLogs.get(i).getEntryTime() != null) {
@@ -109,15 +113,73 @@ public class LogsActivity extends AppCompatActivity {
 
         listAdapter = new ListAdapter(logListRowObjs, getApplicationContext());
         lvLogs.setAdapter(listAdapter);
-        lvLogs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvLogs.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        lvLogs.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+            private int numberLinesChosen = 0;
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LogListRowObj logListRowObj = logListRowObjs.get(position);
+            public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
+                numberLinesChosen = 0;
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.context_menu_logs_activity, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(android.view.ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+
+                    case R.id.action_delete:
+                        numberLinesChosen = 0;
+                        listAdapter.clearSelection();
+                        actionMode.finish();
+                }
+                    return false;
+            }
+            @Override
+            public void onDestroyActionMode(android.view.ActionMode actionMode) {
+
+            }
+
+            @Override
+            public void onItemCheckedStateChanged(android.view.ActionMode actionMode, int position, long l, boolean checked) {
+                if (checked) {
+                    numberLinesChosen++;
+                    listAdapter.setNewSelection(position, checked);
+                } else {
+                    numberLinesChosen--;
+                    listAdapter.removeSelection(position);
+                }
+                actionMode.setTitle(numberLinesChosen + " selected");
+
             }
         });
+
+
+        lvLogs.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+
+                LogListRowObj logListRowObj = logListRowObjs.get(position);
+                lvLogs.setItemChecked(position, !listAdapter.isPositionChecked(position));
+
+
+                return false;
+            }
+        });
+
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     private ArrayList<LogObj> extractLogsList() {
@@ -160,6 +222,46 @@ public class LogsActivity extends AppCompatActivity {
         }
     }
 
+    ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.context_menu_logs_activity, menu);
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_edit:
+//                    shareCurrentItem();
+                    return true;
+                case R.id.action_delete:
+//                    shareCurrentItem();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+//            mActionMode = null;
+        }
+    };
+
     private void checkWriteDocumentPermission() {
         if (ContextCompat.checkSelfPermission(LogsActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -180,35 +282,6 @@ public class LogsActivity extends AppCompatActivity {
     }
 
     void createPdf() throws DocumentException, IOException {
-//!!!!!!!!!!!!!!!!!!!!!!!!Works well!!!!!!!!!!!!!!!!!!!!!!
-//        PdfDocument document = new PdfDocument();
-//
-//        // repaint the user's text into the page
-//        View content = findViewById(R.id.tv_logs_header);
-//
-//        // crate a page description
-//        int pageNumber = 1;
-//        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(content.getWidth(),
-//                content.getHeight() - 20, pageNumber).create();
-//
-//        // create a new page from the PageInfo
-//        PdfDocument.Page page = document.startPage(pageInfo);
-//
-//        content.draw(page.getCanvas());
-//
-//        // do final processing of the page
-//        document.finishPage(page);
-//
-//        try {
-//            outputFile.createNewFile();
-//            OutputStream out = new FileOutputStream(outputFile);
-//            document.writeTo(out);
-//            document.close();
-//            out.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_hhmmss");
         String pdfName = "LogsHistoryList"
                 + sdf.format(Calendar.getInstance().getTime()) + ".pdf";
@@ -225,7 +298,7 @@ public class LogsActivity extends AppCompatActivity {
         document.open();
 
         Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-        Paragraph title = new Paragraph("History Logs List - for " + userObj.getFirstName() +" " + userObj.getLastName(), boldFont);
+        Paragraph title = new Paragraph("History Logs List - for " + userObj.getFirstName() + " " + userObj.getLastName(), boldFont);
         sdf = new SimpleDateFormat("dd-MMM-yyyy hh:mm");
         Paragraph dateTime = new Paragraph("Created on: " + sdf.format(Calendar.getInstance().getTime()), boldFont);
         title.setAlignment(Element.ALIGN_CENTER);
@@ -239,22 +312,7 @@ public class LogsActivity extends AppCompatActivity {
             document.add(new Paragraph("Entry Time: " + logListRowObj.getEntryTime() + "   Exit Time: " + logListRowObj.getExitTime() + "   Total Time: " + logListRowObj.getTotalTime() + "   Notes: " + logListRowObj.getNotes()));
         }
         document.close();
-//
-//        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-//        File fileWithinMyDir = new File(outputFile.getPath());
-//
-//        if(fileWithinMyDir.exists()) {
-//            intentShareFile.setType("application/pdf");
-//            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:/"+outputFile.getPath()));
-//
-//            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-//                    "Sharing File...");
-//            intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing File...");
-//            intentShareFile.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//            startActivity(Intent.createChooser(intentShareFile, "Share File"));
     }
-
 
 
     /**

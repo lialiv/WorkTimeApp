@@ -89,6 +89,8 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:hint="Add note"
         android:textSize="@dimen/text_size"
+        android:textColor="@android:color/white"
+        android:maxLength="40"
         android:gravity="center"
         />
 
